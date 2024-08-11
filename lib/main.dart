@@ -69,14 +69,14 @@ class HomePage extends StatelessWidget {
   }
 }
 
-// enum MenuAction { logout }
+enum MenuAction { logout }
 
-// class NotesView extends StatefulWidget {
-//   const NotesView({super.key});
+class NotesView extends StatefulWidget {
+  const NotesView({super.key});
 
-//   @override
-//   State<NotesView> createState() => _NotesViewState();
-// }
+  @override
+  State<NotesView> createState() => _NotesViewState();
+}
 
 class _NotesViewState extends State<NotesView> {
   @override
