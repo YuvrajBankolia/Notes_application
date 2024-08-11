@@ -30,7 +30,7 @@ void main() {
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
+// djfsfjsoifjofj
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -69,14 +69,14 @@ class HomePage extends StatelessWidget {
   }
 }
 
-enum MenuAction { logout }
+// enum MenuAction { logout }
 
-class NotesView extends StatefulWidget {
-  const NotesView({super.key});
+// class NotesView extends StatefulWidget {
+//   const NotesView({super.key});
 
-  @override
-  State<NotesView> createState() => _NotesViewState();
-}
+//   @override
+//   State<NotesView> createState() => _NotesViewState();
+// }
 
 class _NotesViewState extends State<NotesView> {
   @override
