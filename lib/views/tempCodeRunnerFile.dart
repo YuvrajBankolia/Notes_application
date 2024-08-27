@@ -20,15 +20,15 @@ class _NotesViewState extends State<NotesView> {
   @override
   void initState() {
     _notesService = NotesService();
-    // _notesService.open();
+    _notesService.open();
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   _notesService.close();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _notesService.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,23 +81,15 @@ class _NotesViewState extends State<NotesView> {
                     case ConnectionState.active:
                       if (snapshot.hasData) {
                         final allNotes = snapshot.data as List<DatabaseNote>;
-                        return ListView.builder(
-                          itemCount: allNotes.length,
-                          itemBuilder: (context, index) {
-                            return const Text('Item');
-                          },
-                        );
-                        // print(allNotes);
-                        // return const Text('Got all the notes');
-                        // return NotesListView(
-                        //     notes: allNotes,
-                        //     onDeleteNote: (note) async {
-                        //       // return const Text('Waiting for all notes....');
-                        //       await _notesService.deleteNote(id: note.id);
-                        //     });
+                        return NotesListView(
+                            notes: allNotes,
+                            onDeleteNote: (note) async {
+                              await _notesService.deleteNote(id: note.id);
+                            });
                       } else {
                         return const CircularProgressIndicator();
                       }
+                    // return const Text('Waiting for all notes....');
                     default:
                       return const CircularProgressIndicator();
                   }
@@ -111,27 +103,3 @@ class _NotesViewState extends State<NotesView> {
     );
   }
 }
-
-// Future<bool> showLogOutDialog(BuildContext context) {
-//   return showDialog<bool>(
-//     context: context,
-//     builder: (context) {
-//       return AlertDialog(
-//         title: const Text('Sign out'),
-//         content: const Text('Are you sure you want to sign out'),
-//         actions: [
-//           TextButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop(false);
-//               },
-//               child: const Text('Cancel')),
-//           TextButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop(true);
-//               },
-//               child: const Text('LogOut')),
-//         ],
-//       );
-//     },
-//   ).then((value) => value ?? false);
-// }

@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/services/crud/notes_service.dart';
@@ -43,8 +44,10 @@ class _NewNoteViewState extends State<NewNoteView> {
   Future<DatabaseNote> createNewNote() async {
     final existingNote = _note;
     if (existingNote != null) {
+      log("note is not null");
       return existingNote;
     }
+    log("note is null");
     final currentUser = AuthService.firebase().currentUser!;
     final email = currentUser.email!;
     final owner = await _notesService.getUser(email: email);
@@ -88,8 +91,9 @@ class _NewNoteViewState extends State<NewNoteView> {
         future: createNewNote(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
-            case ConnectionState.none:
-              _note = snapshot.data as DatabaseNote;
+            case ConnectionState.done:
+              log("connectionState.done");
+              _note = snapshot.data;
               _setupTextControllerListener();
 
               return TextField(
