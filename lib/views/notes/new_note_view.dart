@@ -50,7 +50,9 @@ class _NewNoteViewState extends State<NewNoteView> {
     log("note is null");
     final currentUser = AuthService.firebase().currentUser!;
     final email = currentUser.email!;
+    log("run1");
     final owner = await _notesService.getUser(email: email);
+
     return await _notesService.createNote(owner: owner);
   }
 
@@ -65,6 +67,7 @@ class _NewNoteViewState extends State<NewNoteView> {
     final note = _note;
     final text = _textController.text;
     if (note != null && text.isNotEmpty) {
+      log("run2");
       await _notesService.updateNote(
         note: note,
         text: text,
