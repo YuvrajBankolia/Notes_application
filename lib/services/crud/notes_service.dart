@@ -3,6 +3,7 @@ import 'package:mynotes/services/crud/crud_exceptions.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' show join;
+import 'package:sqflite/sqlite_api.dart';
 
 class NotesService {
   Database? _db;
@@ -53,11 +54,12 @@ class NotesService {
     await _ensureDbIsOpen();
 
     final db = _getDatabaseOrThrow();
-    final deleteCount = await db.delete(
+    final deletedCount = await db.delete(
       noteTable,
+      where: 'id= ?',
       whereArgs: [id],
     );
-    if (deleteCount == 0) {
+    if (deletedCount == 0) {
       throw CouldNotDeleteNote();
     } else {
       _notes.removeWhere((note) => note.id == id);
@@ -74,11 +76,16 @@ class NotesService {
     // make sure notes exist
     await getNote(id: note.id);
 // update db
-    final updatesCount = await db.update(noteTable, {
-      textColumn: text,
-      isSyncedWithCloudColumn: 0,
-    });
-
+    final updatesCount = await db.update(
+      noteTable,
+      {
+        textColumn: text,
+        isSyncedWithCloudColumn: 0,
+      },
+      where: 'id = ? ',
+      // where: 'id = ?',
+      whereArgs: [note.id],
+    );
     if (updatesCount == 0) {
       throw CouldNotUpdateNote();
     } else {
@@ -121,7 +128,7 @@ class NotesService {
   Future<DatabaseNote> createNote({required DatabaseUser owner}) async {
     await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
-
+    // make sure owner exists in the database with the correct id
     final dbUser = await getUser(email: owner.email);
     if (dbUser != owner) {
       throw CouldNotFindUser();
@@ -137,7 +144,7 @@ class NotesService {
       id: noteId,
       userId: owner.id,
       text: text,
-      isSyncWithCloud: true,
+      isSyncedWithCloud: true,
     );
 
     _notes.add(note);
@@ -153,7 +160,7 @@ class NotesService {
       userTable,
       limit: 1,
       where: 'email= ?',
-      whereArgs: [email.toLowerCase],
+      whereArgs: [email.toLowerCase()],
     );
     if (results.isEmpty) {
       throw CouldNotFindUser();
@@ -169,7 +176,7 @@ class NotesService {
       userTable,
       limit: 1,
       where: 'email= ?',
-      whereArgs: [email.toLowerCase],
+      whereArgs: [email.toLowerCase()],
     );
     if (results.isNotEmpty) {
       throw UserAlreadyExists();
@@ -218,12 +225,14 @@ class NotesService {
   Future<void> _ensureDbIsOpen() async {
     try {
       await open();
-    } on DatabaseAlreadyopenException {}
+    } on DatabaseAlreadyOpenException {
+// empty
+    }
   }
 
   Future<void> open() async {
     if (_db != null) {
-      throw DatabaseAlreadyopenException();
+      throw DatabaseAlreadyOpenException();
     }
     try {
       final docsPath = await getApplicationDocumentsDirectory();
@@ -267,24 +276,24 @@ class DatabaseNote {
   final int id;
   final int userId;
   final String text;
-  final bool isSyncWithCloud;
+  final bool isSyncedWithCloud;
 
   DatabaseNote({
     required this.id,
     required this.userId,
     required this.text,
-    required this.isSyncWithCloud,
+    required this.isSyncedWithCloud,
   });
   DatabaseNote.fromRow(Map<String, Object?> map)
       : id = map[idColumn] as int,
         userId = map[userIdColumn] as int,
         text = map[textColumn] as String,
-        isSyncWithCloud =
+        isSyncedWithCloud =
             (map[isSyncedWithCloudColumn] as int) == 1 ? true : false;
 
   @override
   String toString() =>
-      'Note , ID =$id ,userId =$userId , isSyncedWithCloud = $isSyncWithCloud';
+      'Note , ID =$id ,userId =$userId , isSyncedWithCloud = $isSyncedWithCloud';
 
   @override
   bool operator ==(covariant DatabaseNote other) => id == other.id;
