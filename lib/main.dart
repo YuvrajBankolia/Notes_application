@@ -3,7 +3,6 @@ import 'package:mynotes/constant/routes.dart';
 import 'package:mynotes/login_view.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/views/notes/create_update_note_view.dart';
-// import 'package:mynotes/views/notes/new_note_view.dart';
 import 'package:mynotes/views/notes_view.dart';
 import 'package:mynotes/views/registerView.dart';
 import 'package:mynotes/views/verify_email_view.dart';
