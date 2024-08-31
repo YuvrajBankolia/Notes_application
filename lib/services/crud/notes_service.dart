@@ -1,4 +1,6 @@
 import 'dart:async';
+// import 'dart:math';
+// import 'dart:developer';
 import 'package:mynotes/extensions/list/filter.dart';
 import 'package:mynotes/services/crud/crud_exceptions.dart';
 import 'package:sqflite/sqflite.dart';
@@ -281,6 +283,7 @@ class DatabaseUser {
   });
 
   DatabaseUser.fromRow(Map<String, Object?> map)
+      // log("from row error clr 1");
       : id = map[idColumn] as int,
         email = map[emailColumn] as String;
   @override
@@ -299,12 +302,18 @@ class DatabaseNote {
   final String text;
   final bool isSyncedWithCloud;
 
+  static const String idColumn = 'id';
+  static const String userIdColumn = 'user_id';
+  static const String textColumn = 'text';
+  static const String isSyncedWithCloudColumn = 'is_synced_with_cloud';
+
   DatabaseNote({
     required this.id,
     required this.userId,
     required this.text,
     required this.isSyncedWithCloud,
   });
+
   DatabaseNote.fromRow(Map<String, Object?> map)
       : id = map[idColumn] as int,
         userId = map[userIdColumn] as int,
