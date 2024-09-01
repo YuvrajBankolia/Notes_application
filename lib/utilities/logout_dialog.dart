@@ -6,7 +6,7 @@ Future<bool> showLogOutDialog(BuildContext context) {
     context: context,
     title: 'Log out',
     content: 'Are You sure you to want to logout?',
-    optionBulider: () => {
+    optionsBuilder: () => {
       'Cancel': false,
       'Logout': true,
     },
