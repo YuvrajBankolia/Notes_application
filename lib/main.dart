@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:developer';
 import 'package:mynotes/constant/routes.dart';
 import 'package:mynotes/login_view.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
@@ -41,6 +42,7 @@ class HomePage extends StatelessWidget {
             // print(user);
             final user = AuthService.firebase().currentUser;
             if (user != null) {
+              // log("the note is $note");
               if (user.isEmailVerified) {
                 // print('hello');
                 return const NotesView();
