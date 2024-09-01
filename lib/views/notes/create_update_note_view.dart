@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'package:mynotes/services/auth/auth_service.dart';
-import 'package:mynotes/services/crud/notes_service.dart';
 import 'package:mynotes/services/firebase_cloud_storage.dart';
 import 'package:mynotes/utilities/dialog/cannot_share_empty_note_dialog.dart';
 import 'package:mynotes/utilities/generics/get_arguments.dart';
 import 'package:mynotes/services/cloud/cloud_note.dart';
-import 'package:mynotes/services/cloud/cloud_storage_exceptions.dart';
 import 'package:share_plus/share_plus.dart';
 // import 'package:mynotes/services/cloud/firebase_cloud_storage.dart';
 
@@ -111,12 +109,6 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('New Note'),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.share),
-          )
-        ],
         backgroundColor: Colors.blue,
         actions: [
           IconButton(
