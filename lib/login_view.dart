@@ -5,6 +5,7 @@ import 'package:mynotes/services/auth/auth_exceptioins.dart';
 import 'package:mynotes/services/auth/bloc/auth_bloc.dart';
 import 'package:mynotes/services/auth/bloc/auth_event.dart';
 import 'package:mynotes/services/auth/bloc/auth_state.dart';
+import 'package:mynotes/utilities/dialog/loading_dialog.dart';
 import 'package:mynotes/utilities/error_dialog.dart';
 import 'dart:developer';
 
@@ -45,53 +46,51 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     log("correct 9");
     // return Container(color: Colors.purple);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-        backgroundColor: Colors.blue,
-      ),
-      body: Column(
-        children: [
-          TextField(
-            controller: _email,
-            enableSuggestions: false,
-            autocorrect: false,
-            keyboardType: TextInputType.emailAddress,
-            decoration:
-                const InputDecoration(hintText: '  Enter your email address'),
-          ),
-          TextField(
-            controller: _password,
-            obscureText: true,
-            enableSuggestions: false,
-            autocorrect: false,
-            decoration: const InputDecoration(
-              hintText: '  Enter your password here  ',
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) async {
+        if (state is AuthStateLoggedOut) {
+          log("correct 11");
+          if (state.exception is UserNotFoundAuthException) {
+            log("correct 12");
+            await showErrorDialog(context, 'User nOt Found');
+            log("correct 13");
+          } else if (state.exception is WrongPasswordAuthException) {
+            log("correct 14");
+            await showErrorDialog(context, 'Wrong Credentials');
+            log("correct 15");
+          } else if (state.exception is GenericAuthException) {
+            log("correct 16");
+            await showErrorDialog(context, 'Authentication Error');
+            log("correct 17");
+          }
+          log("correct 18");
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Login'),
+          backgroundColor: Colors.blue,
+        ),
+        body: Column(
+          children: [
+            TextField(
+              controller: _email,
+              enableSuggestions: false,
+              autocorrect: false,
+              keyboardType: TextInputType.emailAddress,
+              decoration:
+                  const InputDecoration(hintText: '  Enter your email address'),
             ),
-          ),
-          BlocListener<AuthBloc, AuthState>(
-            listener: (context, state) async {
-              log("correct 10");
-              if (state is AuthStateLoggedOut) {
-                log("correct 11");
-                if (state.exception is UserNotFoundAuthException) {
-                  log("correct 12");
-                  await showErrorDialog(context, 'User nOt Found');
-                  log("correct 13");
-                } else if (state.exception is WrongPasswordAuthException) {
-                  log("correct 14");
-                  await showErrorDialog(context, 'Wrong Credentials');
-                  log("correct 15");
-                } else if (state.exception is GenericAuthException) {
-                  log("correct 16");
-                  await showErrorDialog(context, 'Authentication Error');
-                  log("correct 17");
-                }
-                log("correct 18");
-              }
-              log("correct 19");
-            },
-            child: TextButton(
+            TextField(
+              controller: _password,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+              decoration: const InputDecoration(
+                hintText: '  Enter your password here  ',
+              ),
+            ),
+            TextButton(
               onPressed: () async {
                 log("correct 20");
                 final email = _email.text;
@@ -105,18 +104,16 @@ class _LoginViewState extends State<LoginView> {
               },
               child: const Text('Login'),
             ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                // '/register/',
-                registerRoute,
-                (route) => false,
-              );
-            },
-            child: const Text('Note Registered Yet ? Register Here !'),
-          )
-        ],
+            TextButton(
+              onPressed: () {
+                context.read<AuthBloc>().add(
+                      const AuthEventShouldRegister(),
+                    );
+              },
+              child: const Text('Note Registered Yet ? Register Here !'),
+            )
+          ],
+        ),
       ),
     );
   }
