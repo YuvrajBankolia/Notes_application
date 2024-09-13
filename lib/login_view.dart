@@ -5,7 +5,6 @@ import 'package:mynotes/services/auth/bloc/auth_bloc.dart';
 import 'package:mynotes/services/auth/bloc/auth_event.dart';
 import 'package:mynotes/services/auth/bloc/auth_state.dart';
 import 'package:mynotes/utilities/error_dialog.dart';
-import 'dart:developer';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -20,24 +19,16 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void initState() {
-    log("correct 1");
     _email = TextEditingController();
-    log("correct 2");
     _password = TextEditingController();
-    log("correct 3");
     super.initState();
-    log("correc 4");
   }
 
   @override
   void dispose() {
-    log("correct 5");
     _email.dispose();
-    log("correct 6");
     _password.dispose();
-    log("correct 7");
     super.dispose();
-    log("correct 8");
   }
 
   @override
@@ -86,7 +77,6 @@ class _LoginViewState extends State<LoginView> {
               ),
               TextButton(
                 onPressed: () async {
-                  log("correct 20");
                   final email = _email.text;
                   final password = _password.text;
                   context.read<AuthBloc>().add(

@@ -69,7 +69,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                           AuthEventForgotPassword(email: email),
                         );
                   },
-                  child: const Text('send me password reset linl')),
+                  child: const Text('send me password reset link')),
               TextButton(
                 onPressed: () {
                   context.read<AuthBloc>().add(

@@ -91,7 +91,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthStateLoggedOut(
           exception: null,
           isLoading: true,
-          loadingText: 'Please wait ehile I log you in ',
+          loadingText: 'Please wait while I log you in ',
         ));
         // emit(const AuthStateLoading());
         final email = event.email;

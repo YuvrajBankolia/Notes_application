@@ -13,6 +13,7 @@ import 'package:mynotes/views/notes_view.dart';
 import 'package:mynotes/views/registerView.dart';
 import 'package:mynotes/views/verify_email_view.dart';
 import 'dart:developer';
+// import 'package:flutter_gen/gen'
 
 void main() {
   log("clear");
